@@ -29,7 +29,7 @@ export default {
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
     // https://go.nuxtjs.dev/typescript
-    '@nuxt/typescript-build',
+    '@nuxt/typescript-build'
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
@@ -37,7 +37,7 @@ export default {
     // https://go.nuxtjs.dev/chakra
     '@chakra-ui/nuxt',
     // https://go.nuxtjs.dev/emotion
-    '@nuxtjs/emotion',
+    '@nuxtjs/emotion'
   ],
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
