@@ -16,15 +16,24 @@
   },
   "dependencies": {
     "@chakra-ui/nuxt": "^0.0.13",
+    "@chakra-ui/theme-vue": "^0.2.11",
+    "@nuxtjs/content": "^0.3.0",
     "@nuxtjs/emotion": "^0.1.0",
     "core-js": "^3.9.1",
-    "nuxt": "^2.15.3"
+    "docsearch.js": "^2.6.3",
+    "feather-icons-paths": "^1.0.8",
+    "github-buttons": "^2.15.0",
+    "node-html-parser": "^3.1.5",
+    "nuxt": "^2.15.3",
+    "vue-feather-icons": "^5.1.0"
   },
   "devDependencies": {
     "@nuxt/types": "^2.15.3",
     "@nuxt/typescript-build": "^2.1.0",
+    "@nuxtjs/axios": "^5.13.1",
     "@nuxtjs/eslint-config": "^6.0.0",
     "@nuxtjs/eslint-config-typescript": "^6.0.0",
+    "@nuxtjs/pwa": "^3.3.5",
     "@wdio/cli": "^7.2.1",
     "@wdio/local-runner": "^7.2.1",
     "@wdio/mocha-framework": "^7.2.1",

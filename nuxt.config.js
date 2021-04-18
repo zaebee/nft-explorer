@@ -25,6 +25,19 @@ export default {
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
+  env: {
+    API_KEY: process.env.API_KEY || 'ckey_95c202a743e24270bc7f1706c4c',
+    API_URL: process.env.API_URL || 'https://api.covalenthq.com/v1',
+    environment: process.env.NODE_ENV || 'development',
+  },
+  axios: {
+    timeout: 30000,
+    apiKEY: process.env.API_KEY || 'ckey_95c202a743e24270bc7f1706c4c',
+    baseURL: process.env.API_URL || 'https://api.covalenthq.com/v1',
+    headers: {'X-Requested-With': 'XMLHttpRequest'},
+    xsrfCookieName: 'csrf-token',
+    xsrfHeaderName: 'X-CSRFToken'
+  },
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
@@ -34,13 +47,19 @@ export default {
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
+    '@nuxtjs/axios',
+    '@nuxtjs/content',
     // https://go.nuxtjs.dev/chakra
     '@chakra-ui/nuxt',
     // https://go.nuxtjs.dev/emotion
-    '@nuxtjs/emotion'
+    '@nuxtjs/emotion',
+    '@nuxtjs/pwa',
   ],
-
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
+    transpile: [
+      '@chakra-ui/vue',
+      '@chakra-ui/theme-vue'
+    ],
   }
 }
