@@ -2,7 +2,7 @@
   <div class="container">
     <c-heading mx="3rem" mt="8" mb="4">The most popular NFT projects on the Binance Chain.</c-heading>
     <c-box mx="3rem">
-      <Contract :list="contracts"/>
+      TODO
     </c-box>
   </div>
 </template>
@@ -15,8 +15,6 @@
     CHeading
   } from '@chakra-ui/vue'
 
-  import Contract from '../components/Contract'
-
   export default {
     name: 'Index',
     async fetch ({store, params}) {
@@ -25,7 +23,6 @@
     components: {
       CBox,
       CHeading,
-      Contract
     },
     data () {
       return {
@@ -43,15 +40,6 @@
       ]),
     },
     methods: {
-      showToast () {
-        this.$toast({
-          title: 'Account created.',
-          description: "We've created your account for you.",
-          status: 'success',
-          duration: 10000,
-          isClosable: true
-        })
-      }
     }
   }
 </script>
