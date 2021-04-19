@@ -4,7 +4,7 @@
       <CColorModeProvider>
         <CBox font-family="body" as="main">
           <CReset />
-          <Navbar/>
+          <Navbar />
           <Nuxt />
         </CBox>
       </CColorModeProvider>
@@ -12,23 +12,23 @@
   </div>
 </template>
 <script>
-  import {
+import {
+  CThemeProvider,
+  CColorModeProvider,
+  CReset,
+  CBox
+} from '@chakra-ui/vue'
+
+import Navbar from '../components/Navbar'
+
+export default {
+  name: 'App',
+  components: {
     CThemeProvider,
     CColorModeProvider,
     CReset,
-    CBox
-  } from '@chakra-ui/vue'
-
-  import Navbar from '../components/Navbar'
-
-  export default {
-    name: 'App',
-    components: {
-      CThemeProvider,
-      CColorModeProvider,
-      CReset,
-      CBox,
-      Navbar
-    }
+    CBox,
+    Navbar
   }
+}
 </script>

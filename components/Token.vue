@@ -29,15 +29,15 @@
         </c-box>
         <c-box>
           {{ item.formattedPrice }}
-          <c-box as="span" color="gray.600" fontSize="sm">
+          <c-box as="span" color="gray.600" font-size="sm">
             / wk
           </c-box>
         </c-box>
         <c-box d="flex" mt="2" align-items="center">
           <c-icon
             v-for="(_, i) in Array(5).fill('')"
-            name="star"
             :key="i"
+            name="star"
             :color="i < item.rating ? 'green.500' : 'gray.300'"
           />
           <c-box as="span" ml="2" color="gray.600" font-size="sm">
@@ -47,33 +47,30 @@
       </c-box>
     </c-box>
   </c-simple-grid>
-
 </template>
 
 <script lang="js">
-  import {
+import {
+  CBox,
+  CBadge,
+  CIcon,
+  CImage,
+  CSimpleGrid
+} from '@chakra-ui/vue'
+
+export default {
+  name: 'Contracts',
+  components: {
     CBox,
     CBadge,
-    CText,
     CIcon,
     CImage,
     CSimpleGrid
-  } from '@chakra-ui/vue'
-
-  export default {
-    name: 'Contracts',
-    components: {
-      CBox,
-      CBadge,
-      CText,
-      CIcon,
-      CImage,
-      CSimpleGrid
-    },
-    props: [
-      'list'
-    ],
-    methods: {
-    }
+  },
+  props: [
+    'list'
+  ],
+  methods: {
   }
+}
 </script>

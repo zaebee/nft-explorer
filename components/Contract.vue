@@ -10,7 +10,7 @@
             font-size="xs"
             text-transform="uppercase"
           >
-          #{{item.number}} &bull; NFT &bull; BSC
+            #{{ item.number }} &bull; NFT &bull; BSC
           </c-box>
         </c-box>
         <c-flex
@@ -30,7 +30,7 @@
                 {{ item.symbol }}
               </c-badge>
               {{ item.marketCap }}
-              <c-text as="span" color="gray.600" fontSize="sm">
+              <c-text as="span" color="gray.600" font-size="sm">
                 / Cap
               </c-text>
             </c-text>
@@ -42,8 +42,8 @@
           </c-box>
           <c-icon
             v-for="(_, i) in Array(5).fill('')"
-            name="star"
             :key="i"
+            name="star"
             :color="i < item.rating ? 'green.500' : 'gray.300'"
           />
         </c-box>
@@ -55,44 +55,36 @@
       </c-box>
     </c-box>
   </c-simple-grid>
-
 </template>
 
 <script lang="js">
-  import { parse } from 'node-html-parser'
-  import {
+import {
+  CAvatar,
+  CBox,
+  CBadge,
+  CButton,
+  CText,
+  CFlex,
+  CIcon,
+  CSimpleGrid
+} from '@chakra-ui/vue'
+
+export default {
+  name: 'Contract',
+  components: {
     CAvatar,
     CBox,
     CBadge,
     CButton,
     CText,
-    CStack,
-    CGrid,
     CFlex,
     CIcon,
-    CImage,
     CSimpleGrid
-  } from '@chakra-ui/vue'
-
-  export default {
-    name: 'Contract',
-    components: {
-      CAvatar,
-      CBox,
-      CBadge,
-      CButton,
-      CText,
-      CStack,
-      CGrid,
-      CFlex,
-      CIcon,
-      CImage,
-      CSimpleGrid
-    },
-    props: [
-      'list'
-    ],
-    methods: {
-    }
+  },
+  props: [
+    'list'
+  ],
+  methods: {
   }
+}
 </script>

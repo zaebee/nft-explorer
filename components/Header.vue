@@ -6,9 +6,10 @@
     wrap="wrap"
     bg="gray.500"
     color="white"
-    boxShadow="md"
+    box-shadow="md"
     mb="3"
-    padding="1.5rem">
+    padding="1.5rem"
+  >
     <CFlex align="center" mr="5">
       <CHeading as="h1" size="lg" letter-spacing="-0.1rem">
         NFT Explorer
@@ -16,7 +17,8 @@
     </CFlex>
     <CBox
       :display="{sm: 'none'}"
-      @click="toggleMenu">
+      @click="toggleMenu"
+    >
       <svg
         fill="white"
         width="12px"
@@ -43,53 +45,53 @@
 </template>
 
 <script>
-  import {
+import {
+  CBox,
+  CFlex,
+  CHeading,
+  CMenu,
+  CMenuItem
+} from '@chakra-ui/vue'
+
+export default {
+  name: 'Header',
+  components: {
     CBox,
     CFlex,
     CHeading,
     CMenu,
     CMenuItem
-  } from '@chakra-ui/vue'
-
-  export default {
-    name: 'Header',
-    components: {
-      CBox,
-      CFlex,
-      CHeading,
-      CMenu,
-      CMenuItem
-    },
-    inject: ['$chakraColorMode', '$toggleColorMode'],
-    data () {
-      return {
-        show: false,
-        showModal: false,
-        mainStyles: {
-          dark: {
-            bg: 'gray.700',
-            color: 'whiteAlpha.900'
-          },
-          light: {
-            bg: 'white',
-            color: 'gray.900'
-          }
+  },
+  inject: ['$chakraColorMode', '$toggleColorMode'],
+  data () {
+    return {
+      show: false,
+      showModal: false,
+      mainStyles: {
+        dark: {
+          bg: 'gray.700',
+          color: 'whiteAlpha.900'
+        },
+        light: {
+          bg: 'white',
+          color: 'gray.900'
         }
       }
+    }
+  },
+  computed: {
+    colorMode () {
+      return this.$chakraColorMode()
     },
-    computed: {
-      colorMode () {
-        return this.$chakraColorMode()
-      },
-      theme () {
-        return this.$chakraTheme()
-      },
-      toggleColorMode () {
-        return this.$toggleColorMode
-      },
-      toggleMenu() {
-        return this.$toggleColorMode
-      }
+    theme () {
+      return this.$chakraTheme()
     },
+    toggleColorMode () {
+      return this.$toggleColorMode
+    },
+    toggleMenu () {
+      return this.$toggleColorMode
+    }
   }
+}
 </script>

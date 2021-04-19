@@ -31,7 +31,7 @@ export default {
     CDrawerContent,
     CIconButton,
     CFragment,
-    CCloseButton,
+    CCloseButton
   },
   data () {
     return {
