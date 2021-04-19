@@ -15,7 +15,7 @@
     "heroku-postbuild": "npm install && npm run build"
   },
   "dependencies": {
-    "@chakra-ui/nuxt": "^0.0.13",
+    "@chakra-ui/nuxt": "^0.3.1",
     "@chakra-ui/theme-vue": "^0.2.11",
     "@nuxtjs/content": "^0.3.0",
     "@nuxtjs/emotion": "^0.1.0",
