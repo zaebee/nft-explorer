@@ -23,17 +23,19 @@ export default {
   plugins: [
   ],
 
+// export default $http
+  serverMiddleware: [
+  ],
+
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
   env: {
-    API_KEY: process.env.API_KEY || 'ckey_95c202a743e24270bc7f1706c4c',
-    API_URL: process.env.API_URL || 'https://api.covalenthq.com/v1',
+    API_URL: process.env.API_URL || 'https://nft.mebelstock.com',
     environment: process.env.NODE_ENV || 'development',
   },
   axios: {
     timeout: 30000,
-    apiKEY: process.env.API_KEY || 'ckey_95c202a743e24270bc7f1706c4c',
-    baseURL: process.env.API_URL || 'https://api.covalenthq.com/v1',
+    baseURL: process.env.API_URL || 'https://nft.mebelstock.com',
     headers: {'X-Requested-With': 'XMLHttpRequest'},
     xsrfCookieName: 'csrf-token',
     xsrfHeaderName: 'X-CSRFToken'

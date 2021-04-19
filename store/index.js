@@ -3,7 +3,7 @@ import Vuex from 'vuex'
 import _ from 'lodash'
 
 import {
-  TOKENS, NFT_TOKEN_IDS, NFT_METADATA
+  TOKENS, NFT_TOKEN_IDS, NFT_METADATA, SEARCH
 } from './mutation-types'
 
 import auth from './modules/auth'
@@ -57,10 +57,12 @@ const actions = {
   async CONTRACT_DETAIL ({commit, state}, _id) {
     let contract =  _.find(state.contracts, {id: _id})
     commit('SET_CONTRACT', contract)
-    let url = `56${TOKENS}/${_id}${NFT_TOKEN_IDS}/`
-    await this.$axios.get(url).then(
+    let url = `${_id}/${SEARCH}`
+    let data = { 'query': { 'match': { 'nft_data.token_balance': '1' } } }
+    await this.$axios.post(url, data).then(
       response => {
-        commit('SET_TOKENS', response.data)
+        console.log('Loaded tokens for contract', response.data.hits.total)
+        commit('SET_TOKENS', response.data.hits)
       },
       error => {
         console.error(error)
@@ -89,12 +91,14 @@ const mutations = {
     state.contracts = payload
   },
   SET_CONTRACT (state, payload) {
+    state.tokens = []
     Object.assign(state.contract, payload)
   },
   SET_TOKENS (state, payload) {
-    console.log('Set contract tokens:', state.contract.id, payload.data.pagination)
-    state.pagination = payload.data.pagination
-    state.tokens = payload.data.items
+    let tokens = _.map(payload.hits, hit => hit._source)
+    console.log('Set contract tokens:', state.contract.id, payload.total)
+    state.pagination = { total: payload.total }
+    state.tokens = tokens
   },
   SET_TOKENS_METADATA (state, payload) {
     let current_metadata = state.tokens_metadata
