@@ -22,7 +22,7 @@
     "core-js": "^3.9.1",
     "docsearch.js": "^2.6.3",
     "feather-icons-paths": "^1.0.8",
-    "github-buttons": "^2.15.0",
+    "github-buttons": "^2.16.0",
     "node-html-parser": "^3.1.5",
     "nuxt": "^2.15.3",
     "vue-feather-icons": "^5.1.0"
