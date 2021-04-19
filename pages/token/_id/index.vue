@@ -130,9 +130,12 @@ export default {
     }
     await store.dispatch('CONTRACT_DETAIL', params.id)
 
+    /*
+    TODO add new contracts to es instead of using content file
     if (!store.state.contract.id) {
       return error({ message: 'Contract not found', statusCode: 404 })
     }
+    */
   },
   head () {
     return {
