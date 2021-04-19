@@ -78,8 +78,9 @@ export default {
   },
   async mounted () {
     // Load Algolia and attach to window
-    const { default: docsearch } = await import('docsearch.js')
-    window.docsearch = docsearch
+    // const { default: docsearch } = await import('docsearch.js')
+    // window.docsearch = docsearch
+    window.docsearch = function() {}
 
     // Search methods:
     const getLvl1 = obj => get('hierarchy.lvl1', obj)

@@ -1,22 +1,20 @@
 <template>
   <c-simple-grid min-child-width="260px" spacing="1rem">
     <c-box v-for="item in list" :key="item.number" rounded="lg" border-width="1px">
-      <c-image :src="item.imageUrl" :alt="item.imageAlt" />
+      <c-image :src="imageSrc(item.nft_data)" :alt="nftName(item.nft_data)" />
       <c-box p="6">
         <c-box d="flex" align-items="baseline">
-          <c-badge rounded="full" px="2" variant-color="green">
-            New
-          </c-badge>
           <c-box
             color="gray.500"
             font-weight="semibold"
             letter-spacing="wide"
             font-size="xs"
             text-transform="uppercase"
-            ml="2"
+            mr="2"
           >
-            {{ item.beds }} beds &bull; {{ item.baths }} baths
+            Owner
           </c-box>
+            <c-badge rounded="full" px="2" variant-color="green">{{ ownerTag(item.nft_data) }}</c-badge>
         </c-box>
         <c-box
           mt="1"
@@ -25,13 +23,10 @@
           line-height="tight"
           is-truncated
         >
-          {{ item.title }}
+          {{ nftName(item.nft_data) }}
         </c-box>
-        <c-box>
-          {{ item.formattedPrice }}
-          <c-box as="span" color="gray.600" font-size="sm">
-            / wk
-          </c-box>
+        <c-box as="span" color="gray.600" font-size="xs">
+          {{ nftDesc(item.nft_data) }}
         </c-box>
         <c-box d="flex" mt="2" align-items="center">
           <c-icon
@@ -71,6 +66,30 @@ export default {
     'list'
   ],
   methods: {
+    imageSrc (nft_data) {
+      if (nft_data.external_data && nft_data.external_data.image) {
+        return nft_data.external_data.image
+      }
+      return 'https://via.placeholder.com/300'
+    },
+    nftName (nft_data) {
+      if (nft_data.external_data && nft_data.external_data.name) {
+        return nft_data.external_data.name
+      }
+      return 'Unnamed'
+    },
+    nftDesc (nft_data) {
+      if (nft_data.external_data && nft_data.external_data.description) {
+        return nft_data.external_data.description.slice(0, 145)
+      }
+      return ''
+    },
+    ownerTag (nft_data) {
+      if (nft_data.owner) {
+        return nft_data.owner.slice(0, 7)
+      }
+      return 'New'
+    }
   }
 }
 </script>

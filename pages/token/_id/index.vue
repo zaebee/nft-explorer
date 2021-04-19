@@ -55,26 +55,33 @@
             Load Tokens
           </c-button>
         </c-box>
-        <c-box d="flex" mt="2" align-items="center">
-          <c-text as="span">
-            Loaded tokens:
-            <c-badge rounded="full" px="2" variant-color="green">
-              {{ tokens_metadata.length }} / {{ pagination.total_count }}
-            </c-badge>
-          </c-text>
-        </c-box>
       </c-box>
     </c-box>
 
-    <c-box mx="3rem" mt="1rem">
+    <c-flex
+      mt="1"
+      mx="3rem"
+      font-weight="semibold"
+      as="h4"
+      line-height="tight"
+      is-truncated
+    >
       <c-box p="6">
         <Pagination :pages="[1, 2, 3, 4, 5]" />
       </c-box>
-    </c-box>
+      <c-box d="flex" mt="2" align-items="center">
+        <c-text as="span">
+          Show tokens:
+          <c-badge rounded="full" px="2" variant-color="green">
+            {{ tokens.length }} / {{ pagination.total }}
+          </c-badge>
+        </c-text>
+      </c-box>
+    </c-flex>
 
     <c-box mx="3rem">
       <c-box px="6" pb="6">
-        <Token :list="tokens_metadata" />
+        <Token :list="tokens" />
       </c-box>
     </c-box>
   </div>
