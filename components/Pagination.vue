@@ -1,7 +1,10 @@
 <template>
-  <c-button-group :spacing="4">
-    <c-box v-for="page in pages" :key="page" as="span">
-      <c-button variant-color="blue" size="sm" @click="changePage(page)">
+  <c-button-group spacing="4">
+    <c-box v-for="page in pagination.pages" :key="page" as="span">
+      <c-button
+        size="sm"
+        :variantColor="outline(page)"
+        @click="changePage(page)">
         {{ page }}
       </c-button>
     </c-box>
@@ -9,6 +12,7 @@
 </template>
 
 <script lang="js">
+import { mapState } from 'vuex'
 import {
   CButton,
   CButtonGroup,
@@ -22,17 +26,25 @@ export default {
     CButtonGroup,
     CBox
   },
-  props: [
-    'pages'
-  ],
+  props: {
+  },
   data () {
     return {
-      activePage: 1
     }
+  },
+  computed: {
+    ...mapState([
+      'contract',
+      'pagination',
+    ]),
   },
   methods: {
     changePage (page) {
       console.log('changing page..', page)
+      this.$store.dispatch('CONTRACT_DETAIL', {_id: this.contract.id, page: page})
+    },
+    outline (page) {
+      return page === this.pagination.current ? 'blue' : 'gray'
     }
   }
 }

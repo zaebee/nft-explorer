@@ -51,8 +51,11 @@
           />
         </c-box>
         <c-box d="flex" mt="2" align-items="center">
-          <c-button :is-loading="loading == true ? true : false" color="gray.600" font-size="sm" @click="loadTokens">
-            Load Tokens
+          <c-button :is-loading="loading == true ? true : false" color="gray.600" font-size="sm" @click="showTokens">
+            Tokens
+          </c-button>
+          <c-button color="gray.600" font-size="sm" @click="showStats" ml="2">
+            Stats
           </c-button>
         </c-box>
       </c-box>
@@ -67,23 +70,45 @@
       is-truncated
     >
       <c-box p="6">
-        <Pagination :pages="[1, 2, 3, 4, 5]" />
+        <Pagination />
       </c-box>
       <c-box d="flex" mt="2" align-items="center">
         <c-text as="span">
           Show tokens:
           <c-badge rounded="full" px="2" variant-color="green">
-            {{ tokens.length }} / {{ pagination.total }}
+            {{ tokens.length * pagination.current }} / {{ pagination.total }}
           </c-badge>
         </c-text>
       </c-box>
     </c-flex>
 
-    <c-box mx="3rem">
+    <c-box mx="3rem" min-height="500px">
       <c-box px="6" pb="6">
         <Token :list="tokens" />
       </c-box>
     </c-box>
+
+    <c-flex
+      mt="1"
+      mx="3rem"
+      font-weight="semibold"
+      as="h4"
+      line-height="tight"
+      is-truncated
+    >
+      <c-box p="6">
+        <Pagination />
+      </c-box>
+      <c-box d="flex" mt="2" align-items="center">
+        <c-text as="span">
+          Show tokens:
+          <c-badge rounded="full" px="2" variant-color="green">
+            {{ tokens.length * pagination.current }} / {{ pagination.total }}
+          </c-badge>
+        </c-text>
+      </c-box>
+    </c-flex>
+
   </div>
 </template>
 
@@ -121,14 +146,15 @@ export default {
   data () {
     return {
       loading: false,
-      showModal: false
+      showModal: false,
+      pages: [],
     }
   },
   async fetch ({ store, params, error }) {
     if (store.state.contracts.length === 0) {
       await store.dispatch('GET_CONTRACTS')
     }
-    await store.dispatch('CONTRACT_DETAIL', params.id)
+    await store.dispatch('CONTRACT_DETAIL', {_id: params.id})
 
     /*
     TODO add new contracts to es instead of using content file
@@ -156,22 +182,23 @@ export default {
       'contracts',
       'contract',
       'tokens',
-      'tokens_metadata',
       'pagination'
     ]),
     ...mapGetters([
       'filterTokenByType',
       'getContractByID'
-    ])
+    ]),
   },
   methods: {
-    loadTokens () {
+    showTokens () {
       console.log('tokens')
       this.loading = true
-      this.$store.dispatch('GET_TOKENS_METADATA')
       setTimeout(() => {
         this.loading = false
       }, 1000)
+    },
+    showStats () {
+      console.log('stats')
     }
   }
 }

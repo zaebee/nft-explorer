@@ -67,8 +67,9 @@ export default {
   ],
   methods: {
     imageSrc (nft_data) {
-      if (nft_data.external_data && nft_data.external_data.image) {
-        return nft_data.external_data.image
+      if (nft_data.external_data) {
+      let data = nft_data.external_data
+        return data.image || data.small_image
       }
       return 'https://via.placeholder.com/300'
     },

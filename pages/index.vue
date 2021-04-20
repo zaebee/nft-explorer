@@ -33,9 +33,11 @@ export default {
   },
   async fetch ({ store, _params }) {
     await store.dispatch('GET_CONTRACTS')
+    await store.dispatch('GET_CONTRACTS_STATS')
   },
   computed: {
     ...mapState([
+      'aggregations',
       'contracts',
       'tokens'
     ]),

@@ -17,8 +17,8 @@ const state = {
   contracts: [],
   contract: {},
   tokens: [],
-  tokens_metadata: [],
-  pagination: {},
+  pagination: {pages: []},
+  aggregations: {},
   request_is_synced: false,
 }
 
@@ -54,32 +54,44 @@ const actions = {
     })
     commit('SET_CONTRACTS', data)
   },
-  async CONTRACT_DETAIL ({commit, state}, _id) {
-    let contract =  _.find(state.contracts, {id: _id})
+  async CONTRACT_DETAIL ({commit, state}, payload) {
+    console.log(`payload ${payload}`)
+    let contract =  _.find(state.contracts, {id: payload._id})
     commit('SET_CONTRACT', contract)
-    let url = `${_id}/${SEARCH}`
-    let data = { 'query': { 'match': { 'nft_data.token_balance': '1' } } }
+    let url = `${payload._id}/${SEARCH}`
+    let data = {
+      'query': {'match_phrase_prefix': {'nft_data.token_url': 'http'}},
+      'size': 20,
+      'from': payload.page || 0 * 20,
+    }
     await this.$axios.post(url, data).then(
       response => {
-        console.log('Loaded tokens for contract', response.data.hits.total)
+        console.log(`Loaded ${response.data.hits.total} tokens for contract[${payload._id}] page:${payload.page}`)
         commit('SET_TOKENS', response.data.hits)
+        commit('SET_CURRENT_PAGE', payload)
       },
       error => {
-        console.error(error)
+        console.error(`Error get contract detail: ${error}`)
         this.$sentry && this.$sentry.captureException(error)
       }
     )
   },
-  async GET_TOKENS_METADATA ({commit, state}) {
-    let baseUrl = `56${TOKENS}/${state.contract.id}${NFT_METADATA}`
-    let tokens = state.tokens.slice(0, 9)
-    for (let index = 0; index < tokens.length; index++) {
-      let url = `${baseUrl}/${tokens[index].token_id}/`
-      const { data } = await this.$axios.get(url)
-      if (data.error == false) {
-        commit('SET_TOKENS_METADATA', data.data.items)
-      }
+  async GET_CONTRACTS_STATS ({commit, state}) {
+    let url = `index-*${SEARCH}`
+    let data = {
+      'query': {'match_phrase_prefix': {'nft_data.token_url': 'http'}},
+      'aggs': {'per_symbol': {'terms': {'field': 'contract_ticker_symbol.keyword'}}},
+      'size': 20,
     }
+    await this.$axios.post(url, data).then(
+      response => {
+        commit('SET_STATS', response.data.aggregations)
+      },
+      error => {
+        console.error(`Error get contract stats: ${error}`)
+        this.$sentry && this.$sentry.captureException(error)
+      }
+    )
   },
   SET_USER ({commit, state}, payload) {
     commit('SET_USER', payload)
@@ -96,15 +108,19 @@ const mutations = {
   },
   SET_TOKENS (state, payload) {
     let tokens = _.map(payload.hits, hit => hit._source)
-    console.log('Set contract tokens:', state.contract.id, payload.total)
-    state.pagination = { total: payload.total }
+    let pages = _.range(Math.ceil(payload.total / tokens.length))
+    Object.assign(state.pagination, {
+      pages: pages.slice(0, 15),
+      total: payload.total,
+    })
     state.tokens = tokens
   },
-  SET_TOKENS_METADATA (state, payload) {
-    let current_metadata = state.tokens_metadata
-    let metadata = _.flatten(_.map(payload, el => el.nft_data))
-    console.log('Set tokens metadata:', metadata)
-    state.tokens_metadata = current_metadata.concat(metadata)
+  SET_STATS (state, payload) {
+    console.log('Set contract stats:', payload)
+    Object.assign(state.aggregations, payload)
+  },
+  SET_CURRENT_PAGE (state, payload) {
+    Object.assign(state.pagination, {current: payload.page || 0})
   },
   SET_USER (state, payload) {
     Object.assign(state.user, payload)
