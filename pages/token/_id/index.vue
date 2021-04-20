@@ -63,7 +63,7 @@
 
     <c-flex
       mt="1"
-      mx="3rem"
+      :mx="['1', '1', '3rem']"
       font-weight="semibold"
       as="h4"
       line-height="tight"
@@ -72,21 +72,18 @@
       <c-box p="6">
         <Pagination />
       </c-box>
-      <c-box d="flex" mt="2" align-items="center">
-        <c-text as="span">
-          Show tokens:
-          <c-badge rounded="full" px="2" variant-color="green">
-            {{ tokens.length * pagination.current }} / {{ pagination.total }}
-          </c-badge>
-        </c-text>
+      <c-box :d="['none', 'none', 'flex']" align-items="center">
+        <c-badge rounded="full" px="2" variant-color="green">
+          {{ tokens.length * pagination.current }} / {{ pagination.total }}
+        </c-badge>
       </c-box>
     </c-flex>
 
-    <c-box mx="3rem" min-height="500px">
+    <c-simple-grid min-child-width="330px" min-height="500px" spacing="1rem" :mx="['1', '1', '3rem']">
       <c-box px="6" pb="6">
         <Token :list="tokens" />
       </c-box>
-    </c-box>
+    </c-simple-grid>
 
     <c-flex
       mt="1"
@@ -123,6 +120,7 @@ import {
   CText,
   CFlex,
   CIcon,
+  CSimpleGrid,
   CHeading
 } from '@chakra-ui/vue'
 import Pagination from '../../../components/Pagination'
@@ -139,6 +137,7 @@ export default {
     CFlex,
     CIcon,
     CHeading,
+  CSimpleGrid,
     Pagination,
     Token
   },

@@ -29,22 +29,18 @@
               <c-badge rounded="full" px="2" variant-color="green">
                 {{ item.symbol }}
               </c-badge>
-              {{ item.marketCap }}
-              <c-text as="span" color="gray.600" font-size="sm">
-                / Cap
-              </c-text>
             </c-text>
           </c-box>
         </c-flex>
         <c-box d="flex" mt="2" align-items="center">
           <c-box as="span" mr="2" color="gray.600" font-size="sm">
-            {{ item.holders }} holders
+            {{ item.cards_count }} tokens
           </c-box>
           <c-icon
             v-for="(_, i) in Array(5).fill('')"
             :key="i"
             name="star"
-            :color="i < item.rating ? 'green.500' : 'gray.300'"
+            :color="i < rating(item) ? 'green.500' : 'gray.300'"
           />
         </c-box>
         <c-box d="flex" mt="2" align-items="center">
@@ -58,6 +54,7 @@
 </template>
 
 <script lang="js">
+import { mapState, mapGetters } from 'vuex'
 import {
   CAvatar,
   CBox,
@@ -84,7 +81,15 @@ export default {
   props: [
     'list'
   ],
+  computed: {
+    ...mapGetters([
+      'getTotalCards',
+    ])
+  },
   methods: {
+    rating (item) {
+      return (item.cards_count / this.getTotalCards) * 5
+    }
   }
 }
 </script>

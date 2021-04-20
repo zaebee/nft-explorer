@@ -1,10 +1,10 @@
 <template>
   <div class="container">
-    <c-heading mx="3rem" mt="8" mb="4">
+    <c-heading :mx="['1rem', '1rem', '3rem']" mt="8" mb="4">
       The most popular NFT projects on the Binance Chain.
     </c-heading>
-    <c-box mx="3rem">
-      <Contract :list="contracts" />
+    <c-box :mx="['1rem', '1rem', '3rem']">
+      <Contract :list="getTopContracts" />
     </c-box>
   </div>
 </template>
@@ -42,8 +42,7 @@ export default {
       'tokens'
     ]),
     ...mapGetters([
-      'filterTokenByType',
-      'getContractByID'
+      'getTopContracts'
     ])
   },
   methods: {

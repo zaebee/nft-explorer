@@ -1,7 +1,7 @@
 <template>
   <c-simple-grid min-child-width="260px" spacing="1rem">
     <c-box v-for="item in list" :key="item.number" rounded="lg" border-width="1px">
-      <c-image :src="imageSrc(item.nft_data)" :alt="nftName(item.nft_data)" />
+        <c-image m="auto" text-align="center" v-lazy="imageSrc(item.nft_data)" :alt="nftName(item.nft_data)" />
       <c-box p="6">
         <c-box d="flex" align-items="baseline">
           <c-box
@@ -35,8 +35,8 @@
             name="star"
             :color="i < item.rating ? 'green.500' : 'gray.300'"
           />
-          <c-box as="span" ml="2" color="gray.600" font-size="sm">
-            {{ item.reviewCount }} reviews
+          <c-box as="span" ml="2" color="gray.600" font-size="sm" font-weight="semibold">
+            #{{ item.token_id }} Token ID
           </c-box>
         </c-box>
       </c-box>
