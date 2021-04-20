@@ -25,6 +25,19 @@ const state = {
 const getters = {
   filterTokenByType: state => topic => state.tokens.filter(token => _.some(token.topics, { name: topic })),
   getContractByID: state => _id => _.find(state.contracts, {slug: _id}),
+  getTotalCards: state => _.sumBy(state.aggregations.per_symbol.buckets, bucket => bucket.doc_count),
+  getTopNames: state => _.map(state.aggregations.per_symbol.buckets, bucket => bucket.key),
+  getTopContracts: state => {
+    let buckets = state.aggregations.per_symbol.buckets
+    let result = _.map(buckets, bucket => {
+      let contract = _.find(state.contracts, {name: bucket.key})
+      if (contract) {
+        contract.cards_count = bucket.doc_count
+      }
+      return contract
+    })
+    return _.without(result, undefined)
+  }
 }
 
 const actions = {
@@ -46,7 +59,11 @@ const actions = {
       }
       let img = root.querySelector('img')
       if (img && img.attrs.src) {
-        el.img = `https://bscscan.com${img.attrs.src}`
+        if (img.attrs.src.startsWith('http')) {
+          el.img = img.attrs.src
+        } else {
+          el.img = `https://bscscan.com${img.attrs.src}`
+        }
       } else {
         el.img = `https://bit.ly/broken-link`
       }
@@ -62,7 +79,7 @@ const actions = {
     let data = {
       'query': {'match_phrase_prefix': {'nft_data.token_url': 'http'}},
       'size': 20,
-      'from': payload.page || 0 * 20,
+      'from': payload.page * 20 || 0,
     }
     await this.$axios.post(url, data).then(
       response => {
@@ -80,7 +97,7 @@ const actions = {
     let url = `index-*${SEARCH}`
     let data = {
       'query': {'match_phrase_prefix': {'nft_data.token_url': 'http'}},
-      'aggs': {'per_symbol': {'terms': {'field': 'contract_ticker_symbol.keyword'}}},
+      'aggs': {'per_symbol': {'terms': {'field': 'contract_name.keyword'}}},
       'size': 20,
     }
     await this.$axios.post(url, data).then(

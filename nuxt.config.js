@@ -21,6 +21,7 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
+    '~/plugins/lazy-load.js'
   ],
 
 // export default $http
@@ -56,7 +57,15 @@ export default {
     // https://go.nuxtjs.dev/emotion
     '@nuxtjs/emotion',
     '@nuxtjs/pwa',
+    '@nuxtjs/yandex-metrika',
   ],
+  yandexMetrika: {
+      id: '76211581',
+      clickmap:true,
+      trackLinks:true,
+      accurateTrackBounce:true,
+      webvisor:true
+  },
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
     transpile: [
