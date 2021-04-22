@@ -21,7 +21,8 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
-    '~/plugins/lazy-load.js'
+    '~/plugins/lazy-load.js',
+    '~/plugins/chart.js'
   ],
 
 // export default $http
