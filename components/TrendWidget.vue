@@ -1,23 +1,28 @@
 <template>
-  <c-box maxW="sm" class="frameworks">
-    <c-box class="framework" :class="slug" v-if="data">
-      <c-stat>
-        <c-stat-label>Collected Fees</c-stat-label>
-        <c-stat-number>$500.00</c-stat-number>
-        <c-stat-helper-text>Feb 12 - Feb 28</c-stat-helper-text>
-      </c-stat>
-      <header class="framework__header">
-        <strong class="framework__name">{{name}}</strong>
-      </header>
-      <div class="framework__data">
-        <div class="framework__data-info">
-          <div class="framework__period">
-            <span class="framework__period-text">{{info.label}}</span>
-          </div>
-          <strong class="framework__downloads">{{info.value}}</strong>
-        </div>
-        <TrendChart :datasets="[dataset]" :min="0" padding="5 5 0" :interactive="true" @mousemove="onMouseMove"></TrendChart>
+  <c-box maxW="sm" class="contracts">
+    <c-box w="50%" class="contract" :class="slug" v-if="data">
+      <div class="contract__data">
+        <c-stat>
+          <c-stat-label class="contract_header">
+            <strong class="contract__name">{{name}}</strong>
+          </c-stat-label>
+          <c-stat-number>BNB{{ info.value }}</c-stat-number>
+          <c-stat-helper-text>{{ info.label }}</c-stat-helper-text>
+        </c-stat>
+        <TrendChart :datasets="[dataset]" :min="0" padding="5 5 0" :interactive="true" @mouse-move="onMouseMove"></TrendChart>
       </div>
+    </c-box>
+    <c-box mt="2rem" w="50%">
+      <c-stack is-inline>
+        <c-avatar name="" src="https://bit.ly/chakra-evan-you" />
+        <c-avatar name="" src="https://bit.ly/chakra-segun-adebayo" />
+        <c-avatar name="" src="https://bit.ly/chakra-sarah-drasner" />
+        <c-avatar name="" src="https://bit.ly/chakra-kelvin-omereshone" />
+        <c-avatar name="" src="https://bit.ly/chakra-mesut-koca" />
+        <c-avatar name="" src="https://bit.ly/chakra-gift-egwuenu" />
+        <c-avatar name="" src="https://bit.ly/chakra-maya-shavin" />
+        <c-avatar name="" src="https://bit.ly/chakra-jonathan-bakebwa" />
+      </c-stack>
     </c-box>
   </c-box>
 </template>
@@ -29,12 +34,15 @@ import {
   CStatLabel,
   CStatNumber,
   CStatHelperText,
+  CStack,
+  CAvatar,
   CBox,
   CHeading,
+  CTooltip,
 } from '@chakra-ui/vue'
 
 export default {
-  name: 'ChartWidget',
+  name: 'TrendWidget',
   components: {
     CBox,
     CHeading,
@@ -42,6 +50,9 @@ export default {
     CStatLabel,
     CStatNumber,
     CStatHelperText,
+    CStack,
+    CAvatar,
+    CTooltip,
   },
 props: {
     data: {
@@ -51,7 +62,7 @@ props: {
   },
   data () {
     return {
-      name: 'CryptoZ',
+      name: 'CryptoZ Cards',
       slug: 'cryptoz',
       currentInfo: null
     }
@@ -61,20 +72,22 @@ props: {
       return {
         data: this.data,
         showPoints: true,
-        fill: false,
+        fill: true,
         className: 'curve-cryptoz'
       }
-    }, 
+    },
+    weeklySales () {
+      return 0
+    },
     info () {
       return {
-        label: 'Weekly sales',
-        value: 12,
+        label: this.currentInfo ? this.currentInfo.label : 'Weekly sales',
+        value: this.currentInfo ? this.currentInfo.value : this.weeklySales
       }
     },
   },
   methods: {
     onMouseMove (params) {
-      console.log(params, 'mouse')
       if (!params) {
         this.currentInfo = null
         return
@@ -87,10 +100,13 @@ props: {
   }
 }
 </script>
+
 <style lang="scss">
-.frameworks {
+.contracts {
   display: flex;
   flex-wrap: wrap;
+  overflow: hidden;
+  align-items: center;
   .vtc {
     width: 160px;
     height: 60px;
@@ -112,7 +128,7 @@ props: {
      display: block;
   }
 }
-.framework {
+.contract {
   width: 100%;
   &__header {
     display: flex;

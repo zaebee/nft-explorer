@@ -3,7 +3,7 @@ import Vuex from 'vuex'
 import _ from 'lodash'
 
 import {
-  TOKENS, NFT_TOKEN_IDS, NFT_METADATA, SEARCH
+  TOKENS, NFT_TOKEN_IDS, NFT_METADATA, SEARCH, SALES_AGGREGATION, OFFERS_AGGREGATION
 } from './mutation-types'
 
 import auth from './modules/auth'
@@ -19,7 +19,8 @@ const state = {
   tokens: [],
   pagination: {pages: []},
   aggregations: {},
-  request_is_synced: false,
+  transactions: {},
+  offers: {},
 }
 
 const getters = {
@@ -110,6 +111,42 @@ const actions = {
       }
     )
   },
+  async GET_TRANSACTIONS({commit, state}, payload) {
+    let url = `sales-${payload._id}${SEARCH}`
+    await this.$axios.post(url, SALES_AGGREGATION).then(
+      response => {
+        commit('SET_TRANSACTIONS', response.data)
+      },
+      error => {
+        console.error(`Error get transactions stats: ${error}`)
+        this.$sentry && this.$sentry.captureException(error)
+      }
+    )
+  },
+  async GET_OFFERS({commit, state}, payload) {
+    let name = payload.name
+    let url = `sales-*${SEARCH}`
+    let data = {'query': {
+      'bool': {
+        'filter': [{'match_phrase': {'token_name': payload.name}},
+        {'match': {'logs.action': 'eveNewSales'}}]}},
+        'sort': [{'logs.startTime': {'order': 'desc'}}],
+        'size': 3}
+    await this.$axios.post(url, data).then(
+      response => {
+
+        payload[name] = response.data.hits
+        commit('SET_OFFERS', payload)
+      },
+      error => {
+        console.error(`Error get transactions stats: ${error}`)
+        this.$sentry && this.$sentry.captureException(error)
+      }
+    )
+  },
+  SET_TOKEN ({commit, state}, payload) {
+    console.log(payload)
+  },
   SET_USER ({commit, state}, payload) {
     commit('SET_USER', payload)
   },
@@ -135,6 +172,13 @@ const mutations = {
   SET_STATS (state, payload) {
     console.log('Set contract stats:', payload)
     Object.assign(state.aggregations, payload)
+  },
+  SET_TRANSACTIONS (state, payload) {
+    Object.assign(state.transactions, payload.aggregations)
+    //Object.assign(state.transactions.hits, payload.hits)
+  },
+  SET_OFFERS (state, payload) {
+    Object.assign(state.offers, payload)
   },
   SET_CURRENT_PAGE (state, payload) {
     Object.assign(state.pagination, {current: payload.page || 0})

@@ -1,18 +1,31 @@
 <template>
   <div class="container">
-    <c-heading mx="3rem" mt="8" mb="4">
+    <c-heading :mx="['1rem', '1rem', '3rem']" mt="8" mb="4">
       Token Shop
     </c-heading>
-    <c-box mx="3rem" rounded="lg" border-width="1px">
+    <c-box :mx="['1rem', '1rem', '3rem']" rounded="lg" border-width="1px">
       <c-box p="6">
-        TODO
         <trend-widget :data="stats" />
+      </c-box>
+    </c-box>
+    <c-box :mx="['1rem', '1rem', '3rem']">
+      <c-box p="6">
+        <SaleWidget
+          v-if="bucket.key"
+          v-for="bucket in transactions.byTokenName.buckets.slice(0, 15)"
+          :key="bucket.key"
+          :volume="bucket.volume.value"
+          :avgPrice="bucket.avgPrice.value"
+          :sales="bucket.salesPerDay.buckets"
+          :contract="contract"
+          :name="bucket.key"/>
       </c-box>
     </c-box>
   </div>
 </template>
 
 <script lang="js">
+import SaleWidget from  '../components/SaleWidget'
 import TrendWidget from  '../components/TrendWidget'
 import { mapState, mapGetters } from 'vuex'
 
@@ -26,6 +39,7 @@ export default {
   components: {
     CBox,
     CHeading,
+    SaleWidget,
     TrendWidget
   },
   data () {
@@ -43,7 +57,12 @@ export default {
     }
   },
   async fetch ({ store, _params }) {
-    await store.dispatch('GET_CONTRACTS')
+    if (store.state.contracts.length === 0) {
+      await store.dispatch('GET_CONTRACTS')
+    }
+    await store.dispatch('CONTRACT_DETAIL', {_id: '0x8a0c542ba7bbbab7cf3551ffcc546cdc5362d2a1'})
+    await store.dispatch('GET_CONTRACTS_STATS')
+    await store.dispatch('GET_TRANSACTIONS', {_id: '0x8a0c542ba7bbbab7cf3551ffcc546cdc5362d2a1'})
   },
   head () {
     return {
@@ -57,8 +76,11 @@ export default {
   },
   computed: {
     ...mapState([
+      'contract',
       'contracts',
-      'tokens'
+      'tokens',
+      'transactions',
+      'offers'
     ]),
     ...mapGetters([
       'filterTokenByType',
