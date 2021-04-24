@@ -56,13 +56,14 @@ export default {
       ]
     }
   },
-  async fetch ({ store, _params }) {
+  async fetch ({ store, params }) {
     if (store.state.contracts.length === 0) {
       await store.dispatch('GET_CONTRACTS')
     }
-    if (_params && _params._id) {
-      await store.dispatch('CONTRACT_DETAIL', {_id: _params._id})
-      await store.dispatch('GET_TRANSACTIONS', {_id: _params._id})
+    console.log('Shop params', params)
+    if (params && params.id) {
+      await store.dispatch('CONTRACT_DETAIL', {_id: params.id})
+      await store.dispatch('GET_TRANSACTIONS', {_id: params.id})
     } else {
     }
     await store.dispatch('CONTRACT_DETAIL', {_id: '0x8a0c542ba7bbbab7cf3551ffcc546cdc5362d2a1'})

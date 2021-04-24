@@ -36,7 +36,7 @@
             :color="i < item.rating ? 'green.500' : 'gray.300'"
           />
           <c-box as="span" ml="2" color="gray.600" font-size="sm" font-weight="semibold">
-            #{{ item.token_id }} Token ID
+            #{{ item.token_id.slice(0, 7) }} Token ID
           </c-box>
         </c-box>
       </c-box>
@@ -54,7 +54,7 @@ import {
 } from '@chakra-ui/vue'
 
 export default {
-  name: 'Contracts',
+  name: 'Token',
   components: {
     CBox,
     CBadge,

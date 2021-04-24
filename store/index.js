@@ -73,10 +73,9 @@ const actions = {
     commit('SET_CONTRACTS', data)
   },
   async CONTRACT_DETAIL ({commit, state}, payload) {
-    console.log(`payload ${payload}`)
+    console.log(`payload ${payload._id}`)
     let contract =  _.find(state.contracts, {id: payload._id})
-    commit('SET_CONTRACT', contract)
-    let url = `${payload._id}/${SEARCH}`
+    let url = `${payload._id}${SEARCH}`
     let data = {
       'query': {'match_phrase_prefix': {'nft_data.token_url': 'http'}},
       'size': 20,
@@ -84,12 +83,13 @@ const actions = {
     }
     await this.$axios.post(url, data).then(
       response => {
-        console.log(`Loaded ${response.data.hits.total} tokens for contract[${payload._id}] page:${payload.page}`)
+        console.log(`Loaded ${response.data.hits.total} tokens for contract[${payload._id}] page:${payload.page || 0}`)
+        commit('SET_CONTRACT', contract)
         commit('SET_TOKENS', response.data.hits)
         commit('SET_CURRENT_PAGE', payload)
       },
       error => {
-        console.error(`Error get contract detail: ${error}`)
+        console.error(`Error get contract detail: ${error}, url: ${url}`)
         this.$sentry && this.$sentry.captureException(error)
       }
     )

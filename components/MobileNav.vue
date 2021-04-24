@@ -5,7 +5,6 @@
       aria-label="Navigation Menu"
       font-size="20px"
       variant="ghost"
-      icon="menu"
       @click="toggleMenu"
     />
     <CDrawer size="xs" :is-open="isOpen" placement="left" :on-close="handleClose">

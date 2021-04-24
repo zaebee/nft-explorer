@@ -70,7 +70,7 @@
       is-truncated
     >
       <c-box p="6">
-        <Pagination />
+        <Pagination @changePage="loadTokens" :pages="pagination.pages" />
       </c-box>
       <c-box :d="['none', 'none', 'flex']" align-items="center">
         <c-badge rounded="full" px="2" variant-color="green">
@@ -94,7 +94,7 @@
       is-truncated
     >
       <c-box p="6">
-        <Pagination />
+        <Pagination @changePage="loadTokens" :pages="pagination.pages" />
       </c-box>
       <c-box d="flex" mt="2" align-items="center">
         <c-text as="span">
@@ -141,27 +141,6 @@ export default {
     Pagination,
     Token
   },
-  scrollToTop: true,
-  data () {
-    return {
-      loading: false,
-      showModal: false,
-      pages: [],
-    }
-  },
-  async fetch ({ store, params, error }) {
-    if (store.state.contracts.length === 0) {
-      await store.dispatch('GET_CONTRACTS')
-    }
-    await store.dispatch('CONTRACT_DETAIL', {_id: params.id})
-
-    /*
-    TODO add new contracts to es instead of using content file
-    if (!store.state.contract.id) {
-      return error({ message: 'Contract not found', statusCode: 404 })
-    }
-    */
-  },
   head () {
     return {
       title: `${this.contract.name} - NFT Explorer»`,
@@ -171,9 +150,26 @@ export default {
         { property: 'og:title', content: `${this.contract.name} - NFT Explorer` },
         { property: 'og:description', content: this.contract.name }
       ],
-      bodyAttrs: {
-        class: 'app app-contract'
-      }
+    }
+  },
+  async fetch ({ store, params, error }) {
+    if (store.state.contracts.length == 0) {
+      await store.dispatch('GET_CONTRACTS')
+    }
+    console.log('Token params', params)
+    if (params && params.id) {
+      await store.dispatch('CONTRACT_DETAIL', {_id: params.id})
+    }
+
+    if (!store.state.contract.id) {
+      return error({ message: 'Contract not found', statusCode: 404 })
+    }
+  },
+  data () {
+    return {
+      loading: false,
+      showModal: false,
+      pages: [],
     }
   },
   computed: {
@@ -184,11 +180,14 @@ export default {
       'pagination'
     ]),
     ...mapGetters([
-      'filterTokenByType',
       'getContractByID'
     ]),
   },
   methods: {
+    loadTokens (page) {
+      console.log(page)
+      this.$store.dispatch('CONTRACT_DETAIL', {_id: this.contract.id, page: page})
+    },
     showTokens () {
       console.log('tokens')
       this.loading = true

@@ -1,6 +1,6 @@
 <template>
   <c-button-group spacing="4">
-    <c-box v-for="page in pagination.pages" :key="page" as="span">
+    <c-box v-for="page in pages" :key="page" as="span">
       <c-button
         size="sm"
         :variantColor="outline(page)"
@@ -12,39 +12,37 @@
 </template>
 
 <script lang="js">
-import { mapState } from 'vuex'
 import {
+  CBox,
   CButton,
   CButtonGroup,
-  CBox
 } from '@chakra-ui/vue'
 
 export default {
   name: 'Pagination',
   components: {
+    CBox,
     CButton,
     CButtonGroup,
-    CBox
   },
   props: {
+    pages: {
+      type: Array,
+      required: true
+    }
   },
   data () {
     return {
+      currentPage: 0,
     }
-  },
-  computed: {
-    ...mapState([
-      'contract',
-      'pagination',
-    ]),
   },
   methods: {
     changePage (page) {
-      console.log('changing page..', page)
-      this.$store.dispatch('CONTRACT_DETAIL', {_id: this.contract.id, page: page})
+      this.$emit('changePage', page)
+      this.currentPage = page
     },
     outline (page) {
-      return page === this.pagination.current ? 'blue' : 'gray'
+      return page === this.currentPage ? 'blue' : 'gray'
     }
   }
 }
