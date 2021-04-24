@@ -3,18 +3,17 @@
     <c-grid template-columns="repeat(4, 1fr)" gap="6">
       <c-box w="100%">
         <c-stack is-inline>
-          <c-avatar :name="name" :src="contract.img" />
           <c-image size="sm" :name="name" v-lazy="imageSrc(name)"  />
         </c-stack>
       </c-box>
 
       <c-box w="100%" class="sales">
         <c-stat>
+          <c-stat-number>{{ name || 'Unknown name' }}</c-stat-number>
           <c-stat-label class="contract_header">
-            <strong class="contract__name">{{ name || 'Unknown name' }}</strong>
+            <strong class="contract__name">vol: {{ volume.toFixed(5) }} <b>BNB</b> </strong>
           </c-stat-label>
-          <c-stat-number><b>BNB</b> {{ volume.toFixed(5) }}</c-stat-number>
-          <c-stat-helper-text><b>{{ dealsCount }}</b> Deals with average price BNB {{ avgPrice.toFixed(5) }}</c-stat-helper-text>
+          <c-stat-helper-text><b>{{ dealsCount }}</b> Deals with average price {{ avgPrice.toFixed(5) }} BNB </c-stat-helper-text>
         </c-stat>
         <trend-chart
           :datasets="datasets"

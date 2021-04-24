@@ -24,7 +24,7 @@ const state = {
 }
 
 const getters = {
-  filterTokenByType: state => topic => state.tokens.filter(token => _.some(token.topics, { name: topic })),
+  getTransactionsByContractID: state => _id => state.transactions[_id],
   getContractByID: state => _id => _.find(state.contracts, {slug: _id}),
   getTotalCards: state => _.sumBy(state.aggregations.per_symbol.buckets, bucket => bucket.doc_count),
   getTopNames: state => _.map(state.aggregations.per_symbol.buckets, bucket => bucket.key),
@@ -115,7 +115,9 @@ const actions = {
     let url = `sales-${payload._id}${SEARCH}`
     await this.$axios.post(url, SALES_AGGREGATION).then(
       response => {
-        commit('SET_TRANSACTIONS', response.data)
+        let data = {}
+        data[payload._id] = response.data.aggregations
+        commit('SET_TRANSACTIONS', data)
       },
       error => {
         console.error(`Error get transactions stats: ${error}`)
@@ -174,7 +176,7 @@ const mutations = {
     Object.assign(state.aggregations, payload)
   },
   SET_TRANSACTIONS (state, payload) {
-    Object.assign(state.transactions, payload.aggregations)
+    Object.assign(state.transactions, payload)
     //Object.assign(state.transactions.hits, payload.hits)
   },
   SET_OFFERS (state, payload) {

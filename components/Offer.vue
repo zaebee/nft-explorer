@@ -1,7 +1,7 @@
 <template>
   <c-stack :spacing="0" my="1rem">
     <c-text font-size="sm">Token ID: {{ deal.token_id }}</c-text>
-    <c-text font-size="sm">Price: <b>BNB {{ deal.logs.length ? deal.logs[0].price : 'unknown' }}</b></c-text>
+    <c-text font-size="sm">Price: <b>{{ deal.logs.length ? deal.logs[0].price : 'unknown' }} BNB </b></c-text>
     <c-text font-size="sm">Seller: {{ deal.logs.length ? deal.logs[0].seller.slice(0, 8) : '-' }}</c-text>
     <c-text font-size="sm">Date: {{ deal.logs.length ? deal.logs[0].startTime: '-' }}</c-text>
     <c-text font-size="sm">

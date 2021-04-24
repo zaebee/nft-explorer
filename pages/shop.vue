@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <c-heading :mx="['1rem', '1rem', '3rem']" mt="8" mb="4">
-      Token Shop
+      Token Shop {{contract_id}}
     </c-heading>
     <c-box :mx="['1rem', '1rem', '3rem']" rounded="lg" border-width="1px">
       <c-box p="6">
@@ -12,7 +12,7 @@
       <c-box p="6">
         <SaleWidget
           v-if="bucket.key"
-          v-for="bucket in transactions.byTokenName.buckets.slice(0, 15)"
+          v-for="bucket in transactions"
           :key="bucket.key"
           :volume="bucket.volume.value"
           :avgPrice="bucket.avgPrice.value"
@@ -44,7 +44,7 @@ export default {
   },
   data () {
     return {
-      showModal: false,
+      contract_id: '0x8a0c542ba7bbbab7cf3551ffcc546cdc5362d2a1',
       stats: [
         {value: 430114, day: "2021-04-15"},
         {value: 379677, day: "2021-04-16"},
@@ -60,9 +60,14 @@ export default {
     if (store.state.contracts.length === 0) {
       await store.dispatch('GET_CONTRACTS')
     }
+    if (_params && _params._id) {
+      await store.dispatch('CONTRACT_DETAIL', {_id: _params._id})
+      await store.dispatch('GET_TRANSACTIONS', {_id: _params._id})
+    } else {
+    }
     await store.dispatch('CONTRACT_DETAIL', {_id: '0x8a0c542ba7bbbab7cf3551ffcc546cdc5362d2a1'})
-    await store.dispatch('GET_CONTRACTS_STATS')
     await store.dispatch('GET_TRANSACTIONS', {_id: '0x8a0c542ba7bbbab7cf3551ffcc546cdc5362d2a1'})
+    await store.dispatch('GET_CONTRACTS_STATS')
   },
   head () {
     return {
@@ -78,14 +83,18 @@ export default {
     ...mapState([
       'contract',
       'contracts',
-      'tokens',
-      'transactions',
-      'offers'
     ]),
     ...mapGetters([
-      'filterTokenByType',
-      'getContractByID'
-    ])
+      'getTransactionsByContractID'
+    ]),
+    transactions () {
+      let trxs = this.getTransactionsByContractID(this.contract_id)
+      if (trxs) {
+        console.log(trxs)
+        return trxs.byTokenName.buckets.slice(0, 15)
+      }
+      return []
+    },
   },
   methods: {
   }
