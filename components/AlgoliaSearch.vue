@@ -41,7 +41,7 @@
     @submit.prevent
   >
     <CInputGroup>
-      <CInputLeftElement><CIcon name="search" color="gray.300" /></CInputLeftElement>
+      <CInputLeftElement></CInputLeftElement>
       <CInput
         id="algolia-search"
         ref="docsearchInput"

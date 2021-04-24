@@ -13,7 +13,7 @@
       <SaleWidget
         v-if="bucket.key"
         :contract="first"
-        v-for="bucket in getTransactionsByContractID(first.id).byTokenName.buckets.slice(0, 3)"
+        v-for="bucket in getTransactionsByContractID(first.id).byTokenName.buckets.slice(0, 5)"
         :key="bucket.key"
         :volume="bucket.volume.value"
         :avgPrice="bucket.avgPrice.value"
@@ -27,7 +27,7 @@
       <SaleWidget
         v-if="bucket.key"
         :contract="second"
-        v-for="bucket in getTransactionsByContractID(second.id).byTokenName.buckets.slice(0, 3)"
+        v-for="bucket in getTransactionsByContractID(second.id).byTokenName.buckets.slice(0, 5)"
         :key="bucket.key"
         :volume="bucket.volume.value"
         :avgPrice="bucket.avgPrice.value"
