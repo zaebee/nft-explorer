@@ -28,7 +28,7 @@
     "feather-icons-paths": "^1.0.8",
     "github-buttons": "^2.16.0",
     "loadsh": "^0.0.4",
-    "node-html-parser": "^3.1.5",
+    "node-html-parser": "^3.2.0",
     "nuxt": "^2.15.3",
     "vue-chartist": "^2.3.1",
     "vue-feather-icons": "^5.1.0",
