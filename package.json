@@ -40,7 +40,7 @@
     "@nuxt/typescript-build": "^2.1.0",
     "@nuxtjs/eslint-config": "^6.0.0",
     "@nuxtjs/eslint-config-typescript": "^6.0.0",
-    "@wdio/cli": "^7.2.1",
+    "@wdio/cli": "^7.5.7",
     "@wdio/local-runner": "^7.2.1",
     "@wdio/mocha-framework": "^7.2.1",
     "@wdio/spec-reporter": "^7.2.1",
