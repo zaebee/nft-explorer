@@ -50,7 +50,7 @@
     "eslint-plugin-wdio": "^7.0.0",
     "node-sass": "^5.0.0",
     "sass": "^1.32.11",
-    "sass-loader": "^10.1.1",
+    "sass-loader": "^13.0.2",
     "webdriverio": "^7.2.1"
   }
 }
